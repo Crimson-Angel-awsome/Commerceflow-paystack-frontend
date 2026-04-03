@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PStark — Shop Smarter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ════════════════════════════════════════ -->
+  <nav>
+    <div class="logo">P<span>Stark</span></div>
+
+    <div class="nav-center">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search products..."
+          oninput="filterProducts()"
+        />
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="cart-btn" onclick="toggleCart()">
+        🛒 Cart
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ════════════════════════════════════════ -->
+  <section class="hero">
+    <h1>Shop Without Limits</h1>
+    <p>From gadgets to furniture — discover everything you need, delivered fast.</p>
+    <div class="hero-tags">
+      <span class="hero-tag active"    onclick="filterByCategory('all',       this)">All</span>
+      <span class="hero-tag"           onclick="filterByCategory('gadgets',   this)">Gadgets</span>
+      <span class="hero-tag"           onclick="filterByCategory('furniture', this)">Furniture</span>
+      <span class="hero-tag"           onclick="filterByCategory('fashion',   this)">Fashion</span>
+      <span class="hero-tag"           onclick="filterByCategory('home',      this)">Home</span>
+      <span class="hero-tag"           onclick="filterByCategory('sports',    this)">Sports</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PRODUCT LISTING
+  ════════════════════════════════════════ -->
+  <main>
+    <div class="section-header">
+      <div class="section-title">Featured Products</div>
+      <select class="sort-select" onchange="sortProducts(this.value)">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+        <option value="name">Name A–Z</option>
+      </select>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Products are injected here by app.js -->
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer>
+    &copy; 2026 <span>PStark</span>. Built for seamless shopping.
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       OVERLAY (closes sidebars & modals)
+  ════════════════════════════════════════ -->
+  <div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+  <!-- ═══════════════════════════════════════
+       CART SIDEBAR
+  ════════════════════════════════════════ -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">🛒 Your Cart</div>
+      <button class="close-btn" onclick="toggleCart()">✕</button>
+    </div>
+
+    <div class="cart-items" id="cartItems">
+      <!-- Cart items injected by app.js -->
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-summary">
+        <span class="summary-label">Total</span>
+        <span class="summary-total" id="cartTotal">₦0.00</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn" onclick="openPaystackModal()" disabled>
+        ⚡ Proceed to Payment
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       PAYSTACK CHECKOUT MODAL
+  ════════════════════════════════════════ -->
+  <div class="modal-wrap" id="paystackModal">
+    <div class="modal">
+
+      <button class="modal-close" onclick="closePaystackModal()">✕</button>
+
+      <div class="modal-header">
+        <div class="paystack-logo">💳</div>
+        <div>
+          <div class="modal-title">Paystack Checkout</div>
+          <div class="modal-subtitle">Secure payment powered by Paystack</div>
+        </div>
+      </div>
+
+      <!-- Order summary (populated by app.js) -->
+      <div class="order-summary-card" id="orderSummaryCard"></div>
+
+      <!-- Customer details form -->
+      <div id="payFormSection">
+        <div class="pay-form">
+          <input type="text"  id="payName"  placeholder="Full Name" />
+          <input type="email" id="payEmail" placeholder="Email Address" />
+          <input type="tel"   id="payPhone" placeholder="Phone Number" />
+          <button class="pay-btn" onclick="generateAccountNumber()">
+            Generate Payment Account
+          </button>
+        </div>
+      </div>
+
+      <!-- Account number display (shown after generation) -->
+      <div class="acct-display" id="acctDisplay">
+        <div class="acct-bank"   id="acctBank"></div>
+        <div class="acct-number" id="acctNumber"></div>
+        <div class="acct-name"   id="acctName"></div>
+        <div class="acct-amount" id="acctAmount"></div>
+        <button class="copy-btn" onclick="copyAcctNumber()">📋 Copy Account Number</button>
+        <p class="acct-expire">
+          Transfer exact amount. Account expires in
+          <span id="acctTimer">30:00</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       TOAST NOTIFICATION
+  ════════════════════════════════════════ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ═══════════════════════════════════════
+       JAVASCRIPT (external)
+  ════════════════════════════════════════ -->
+  <script src="app.js"></script>
+
+</body>
+</html>
